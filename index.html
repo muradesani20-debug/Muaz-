@@ -1,20 +1,61 @@
+
 <!DOCTYPE html>
 <html>
 <head>
 <title>Bichat</title>
+<style>
+body{
+font-family: Arial;
+text-align:center;
+margin-top:40px;
+}
+
+#chat{
+width:300px;
+margin:auto;
+border:1px solid #ccc;
+padding:10px;
+min-height:100px;
+margin-bottom:20px;
+}
+
+input{
+padding:8px;
+width:200px;
+}
+
+button{
+padding:8px 15px;
+}
+</style>
 </head>
 
-<body style="font-family: Arial; text-align:center; margin-top:50px;">
+<body>
 
 <h1>Baga gara Bichat dhuftan</h1>
 
-<input type="text" placeholder="Maqaa kee barreessi">
+<div id="chat"></div>
+
+<input id="name" placeholder="Maqaa kee">
 <br><br>
 
-<input type="text" placeholder="Message barreessi">
+<input id="message" placeholder="Message barreessi">
 <br><br>
 
-<button>Send</button>
+<button onclick="send()">Send</button>
+
+<script>
+function send(){
+var name=document.getElementById("name").value;
+var msg=document.getElementById("message").value;
+
+var chat=document.getElementById("chat");
+
+chat.innerHTML += "<p><b>"+name+":</b> "+msg+"</p>";
+
+document.getElementById("message").value="";
+}
+</script>
 
 </body>
 </html>
