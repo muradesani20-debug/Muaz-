@@ -1,61 +1,112 @@
-
 <!DOCTYPE html>
 <html>
 <head>
 <title>Bichat</title>
+
+<style>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Bichat</title>
+
 <style>
 body{
-font-family: Arial;
-text-align:center;
-margin-top:40px;
+font-family:Arial;
+background:#e5ddd5;
+margin:0;
 }
 
+#top{
+background:#0088cc;
+color:white;
+padding:15px;
+font-size:20px;
+text-align:center
+
 #chat{
-width:300px;
-margin:auto;
-border:1px solid #ccc;
+height:400px;
+overflow:auto;
+background:white;
 padding:10px;
-min-height:100px;
-margin-bottom:20px;
+}
+
+.msg{
+background:#dcf8c6;
+padding:8px;
+margin:5px;
+border-radius:5px;
+max-width:70%;
+}
+
+#sendbox{
+position:fixed;
+bottom:0;
+width:100%;
+background:white;
+padding:10px;
 }
 
 input{
-padding:8px;
-width:200px;
+width:65%;
+padding:10px;
 }
 
 button{
-padding:8px 15px;
+padding:10px;
+background:#0088cc;
+color:white;
+border:none;
 }
 </style>
 </head>
-
 <body>
 
-<h1>Baga gara Bichat dhuftan</h1>
+<div id="top">Bichat</div>
 
 <div id="chat"></div>
 
-<input id="name" placeholder="Maqaa kee">
-<br><br>
-
-<input id="message" placeholder="Message barreessi">
-<br><br>
-
+<div id="sendbox">
+<input id="msg" placeholder="Message...">
 <button onclick="send()">Send</button>
+</div>
 
-<script>
-function send(){
-var name=document.getElementById("name").value;
-var msg=document.getElementById("message").value;
 
-var chat=document.getElementById("chat");
 
-chat.innerHTML += "<p><b>"+name+":</b> "+msg+"</p>";
+<script type="module">
 
-document.getElementById("message").value="";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyBHvoBiK1FLRiyiNwU",
+authDomain: "bichat-865aa.firebaseapp.com",
+databaseURL: "https://bichat-865aa-default-rtdb.firebaseio.com",
+projectId: "bichat-865aa",
+storageBucket: "bichat-865aa.firebasestorage.app",
+messagingSenderId: "168140818847",
+appId: "1:168140818847:web:882ceffa94"
+};
+
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase();
+
+const chat = ref(db,"messages");
+
+window.send = function(){
+let msg=document.getElementById("msg").value;
+if(msg=="") return;
+push(chat,{text:msg});
+document.getElementById("msg").value="";
 }
+
+onChildAdded(chat,function(data){
+let div=document.createElement("div");
+div.className="msg";
+div.innerText=data.val().text;
+document.getElementById("chat").appendChild(div);
+});
+
 </script>
 
 </body>
-</html>
